@@ -1,47 +1,48 @@
-cd
-
+extern crate algorithm;
+extern crate rand;
+use algorithm::sort::selection;
+use algorithm::sort::insertion;
+use algorithm::sort::shell;
+use algorithm::watch::timer::Timer;
+// use std::vec::Vec;
+use rand::Rng;
 
 fn main() {
 
-    let mut arr: [i32;6] = [ 5, 3, 4, 2, 1, 6];
-    insertion_sort_asc(&mut arr);
-    println!("{:?}", arr);
-}
+    let N = 1000;
+    let T = 100;
+    let MAX = N * N;    
+    let mut rng = rand::thread_rng();
 
-fn insertion_sort_asc( array: &mut [i32;6]) {    
-    for i in 1..6 {
-        let key = array[i];
-        let mut j = i;        
-        while j > 0 && array[j - 1] > key  {
-            array[j] = array[j - 1];
-            j = j - 1;
-        }
-        array[ j ] = key;
-    }
-}
-
-fn insertion_sort_desc( ) {
+    let mut insertion_t = 0;
+    let mut selection_t = 0;
+    let mut shell_t = 0;
     
-    let mut array: [i32; 6] = [ 5, 3, 4, 2, 1, 6];
-    println!("original:");
-    println!("{:?}", array);
-
-    println!("sorting:");
-    for i in 1..6 {
-        let key = array[i];
-        let mut j = i;
-        
-        while j > 0 && array[j - 1] < key  {
-            array[j] = array[j - 1];
-            j = j - 1;
+    for _ in (0..T) {
+        let mut vec = Vec::new();
+        for i in (0..N) {            
+            vec.push(rng.gen_range(0, MAX));
         }
+        let mut v2 = vec.clone();
+        let mut v3 = vec.clone();
         
-        array[ j ] = key;
+        let t1 = Timer::new();        
+        insertion::sort(&mut vec);        
+        insertion_t += t1.end();
 
-        println!("{:?}", array);
+        
+        let t2 = Timer::new();
+        selection::sort(&mut v2);
+        selection_t += t2.end();
+
+                
+        let t3 = Timer::new();
+        shell::sort(&mut v3);
+        shell_t += t3.end();
+
     }
+    println!("insertion is {} m", insertion_t);
+    println!("selection is {} m", selection_t);
+    println!("shell is {} m", shell_t);
     
-    println!("result:");
-    println!("{:?}", array);
 }
-

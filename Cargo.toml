@@ -5,3 +5,6 @@ authors = ["xuxy <xuxiaoyu2010@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+kiss3d = { path = "../kiss3d" }
+nalgebra = "0.17"
+rand = "0.6"
